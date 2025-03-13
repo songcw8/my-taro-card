@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.example.mytarocard.model.constant.LLMModel;
 import org.example.mytarocard.model.dto.GeminiPayload;
+import org.example.mytarocard.model.dto.GeminiResponse;
 import org.example.mytarocard.model.dto.LLMServiceParam;
 import org.example.mytarocard.model.dto.LLMServiceResponse;
 
@@ -56,6 +57,13 @@ public class LLMRepository {
         if (response.statusCode() >= 400) {
             logger.info(response.body());
         }
-        return response.body();
+        switch (model.modelName) {
+            case "gemini-2.0-flash" -> {
+                return mapper.readValue(response.body(), GeminiResponse.class).candidates()
+                        .get(0).content().parts().get(0).text();
+            }
+            default -> throw new RuntimeException("Unknown model: " + model);
+        }
+        //return response.body();
     }
 }
