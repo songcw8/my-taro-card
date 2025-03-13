@@ -37,8 +37,13 @@ public class TaroFormController extends Controller {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("TaroFormController doPost");
-        LLMServiceParam param = new LLMServiceParam();
-        LLMServiceResponse response = llmService.callModel(param);
+        LLMServiceParam param = new LLMServiceParam("model", "platform", req.getParameter("prompt"));
+        LLMServiceResponse response;
+        try {
+            response = llmService.callModel(param);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         log(response.data());
 
         // 겹칠 확률이 극도로 낮은 임의의 문자열 값
