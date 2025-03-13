@@ -36,13 +36,15 @@ public class TaroFormController extends Controller {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //무언가 처리할 예정!
         log("TaroFormController doPost");
         LLMServiceParam param = new LLMServiceParam();
         LLMServiceResponse response = llmService.callModel(param);
         log(response.data());
 
+        // 겹칠 확률이 극도로 낮은 임의의 문자열 값
         String uuid = UUID.randomUUID().toString();
+        // 새로운 호출로 처리하겠네...
+
         resp.sendRedirect(req.getContextPath() + "/result/%s".formatted(uuid));
     }
 }

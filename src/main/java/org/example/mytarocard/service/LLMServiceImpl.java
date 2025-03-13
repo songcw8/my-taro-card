@@ -26,11 +26,12 @@ public class LLMServiceImpl implements LLMService {
     @Override
     public LLMServiceResponse callModel(LLMServiceParam param) throws IOException, InterruptedException {
         logger.info("callModel");
+//        return new LLMServiceResponse("test");
         String model = param.model();
         String platform = param.platform();
-        String token = dotenv.get("%s_KEY".formatted(platform));
+        String token = dotenv.get("%S_KEY".formatted(platform));
         String prompt = "%s".formatted(param.prompt());
-        //return new LLMServiceResponse("test");
-        return new LLMServiceResponse(llmRepository.callModel(model, token, platform, prompt));
+        return new LLMServiceResponse(llmRepository.callModel(
+                model, token, platform, prompt));
     }
 }
