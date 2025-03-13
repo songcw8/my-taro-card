@@ -5,6 +5,7 @@ import org.example.mytarocard.model.dto.LLMServiceParam;
 import org.example.mytarocard.model.dto.LLMServiceResponse;
 import org.example.mytarocard.model.repository.LLMRepository;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public class LLMServiceImpl implements LLMService {
@@ -23,7 +24,7 @@ public class LLMServiceImpl implements LLMService {
     private final LLMRepository llmRepository = LLMRepository.getInstance();
 
     @Override
-    public LLMServiceResponse callModel(LLMServiceParam param) {
+    public LLMServiceResponse callModel(LLMServiceParam param) throws IOException, InterruptedException {
         logger.info("callModel");
         String model = param.model();
         String platform = param.platform();
