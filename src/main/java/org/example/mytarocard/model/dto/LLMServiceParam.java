@@ -1,4 +1,6 @@
 package org.example.mytarocard.model.dto;
 
-public record LLMServiceParam(String model, String platform, String prompt) {
+import org.example.mytarocard.model.constant.LLMModel;
+
+public record LLMServiceParam(LLMModel model, String prompt) {
 }

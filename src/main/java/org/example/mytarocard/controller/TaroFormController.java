@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.mytarocard.model.constant.LLMModel;
 import org.example.mytarocard.model.dto.LLMServiceParam;
 import org.example.mytarocard.model.dto.LLMServiceResponse;
 import org.example.mytarocard.service.LLMService;
@@ -37,7 +38,8 @@ public class TaroFormController extends Controller {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("TaroFormController doPost");
-        LLMServiceParam param = new LLMServiceParam("model", "platform", req.getParameter("prompt"));
+        String description = req.getParameter("description");
+        LLMServiceParam param = new LLMServiceParam(LLMModel.GEMINI_2_0_FLASH, req.getParameter(description));
         LLMServiceResponse response;
         try {
             response = llmService.callModel(param);
