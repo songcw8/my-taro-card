@@ -77,3 +77,8 @@ figure > img{
     width: 100%;
     height: auto;
 }
+
+section > form button{
+    padding: 6px;
+    width: 180px;
+}
