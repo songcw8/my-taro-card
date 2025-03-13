@@ -9,6 +9,8 @@ import org.example.mytarocard.model.dto.LLMServiceParam;
 import org.example.mytarocard.model.dto.LLMServiceResponse;
 import org.example.mytarocard.service.LLMService;
 import org.example.mytarocard.service.LLMServiceImpl;
+import org.example.mytarocard.service.SupabaseService;
+import org.example.mytarocard.service.SupabaseServiceImpl;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -16,11 +18,13 @@ import java.util.UUID;
 @WebServlet("/")
 public class TaroFormController extends Controller {
     private LLMService llmService;
+    private SupabaseService supabaseService;
 
     @Override
     public void init() throws ServletException {
         log("TaroFormController init...");
         llmService = LLMServiceImpl.getInstance();
+        supabaseService = SupabaseServiceImpl.getInstance();
     }
 
     @Override
@@ -39,7 +43,7 @@ public class TaroFormController extends Controller {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log("TaroFormController doPost");
         String description = req.getParameter("description");
-        LLMServiceParam param = new LLMServiceParam(LLMModel.GEMINI_2_0_FLASH, req.getParameter(description));
+        LLMServiceParam param = new LLMServiceParam(LLMModel.GEMINI_2_0_FLASH, description);
         LLMServiceResponse response;
         try {
             response = llmService.callModel(param);
@@ -51,6 +55,11 @@ public class TaroFormController extends Controller {
         // 겹칠 확률이 극도로 낮은 임의의 문자열 값
         String uuid = UUID.randomUUID().toString();
         // 새로운 호출로 처리하겠네...
+        try {
+            supabaseService.save(uuid, response.data(), "");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         resp.sendRedirect(req.getContextPath() + "/result/%s".formatted(uuid));
     }

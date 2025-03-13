@@ -17,7 +17,8 @@
         <h1>타로카드 결과</h1>
       </section>
         <section>
-            <p><%= request.getAttribute("uuid") %></p>
+            <%--<p><%= request.getAttribute("uuid") %></p>--%>
+            <p><%= request.getAttribute("data") %></p>
             <button onclick="location.href = '<%= request.getContextPath() %>'">다시 하기</button>
         </section>
     </main>
